@@ -1,0 +1,41 @@
+/* import the necessary Bootstrap files */
+@import "../../node_modules/bootstrap/scss/functions";
+
+/* make changes to the !default Bootstrap variables */
+
+$secondary: rgb(104, 130, 243);
+
+@import "../../node_modules/bootstrap/scss/variables";
+// Accordion
+$accordion-button-padding-y: $list-group-item-padding-y;
+$accordion-button-padding-x: $list-group-item-padding-x;
+$accordion-body-padding-y: 0px;
+$accordion-body-padding-x: 0px;
+
+$accordion-button-focus-border-color: rgba(0, 0, 0, 0);
+$accordion-button-focus-box-shadow: rgba(0, 0, 0, 0);
+
+$accordion-button-bg: transparent;
+$accordion-button-active-bg: transparent;
+$accordion-button-active-color: $body-color;
+
+$accordion-border-width: 0px;
+
+// List group
+$list-group-border-width: 0px;
+
+$list-group-action-hover-color: $body-color;
+
+$list-group-active-color: $gray-900;
+$list-group-active-bg: $gray-200;
+
+// Modal
+$modal-content-border-width: 0px;
+$modal-header-border-width: 0px;
+
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/root";
+
+/* finally, import Bootstrap to set the changes! */
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
