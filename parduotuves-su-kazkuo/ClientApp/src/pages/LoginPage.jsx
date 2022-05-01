@@ -12,8 +12,8 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
+import AuthService from "../services/AuthService";
 
 const validate = (values) => {
   const errors = {};
@@ -42,24 +42,15 @@ export default function LoginPage() {
   const handleSubmit = async ({ email, password }) => {
     setLoading(true);
     setErrMessage("");
-    try {
-      const response = await axios.post(
-        "/accounts/authenticate",
-        {
-          email,
-          password,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      setUser(response.data);
-      navigate(-1);
-    } catch (err) {
-      setLoading(false);
-      setErrMessage(err?.response?.data.message);
-    }
+    await AuthService.login(email, password)
+      .then((response) => {
+        setUser(response.data);
+        navigate(-1);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setErrMessage(err?.response?.data.message);
+      });
   };
 
   const formik = useFormik({

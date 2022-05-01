@@ -71,7 +71,6 @@ export default function RegisterPage() {
           email,
           password,
           confirmPassword: confirmpassword,
-          acceptTerms: true,
         },
         {
           headers: { "Content-Type": "application/json" },

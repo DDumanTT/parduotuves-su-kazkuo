@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
+import AuthService from "../services/AuthService";
 
 const validate = (values) => {
   const errors = {};
@@ -40,24 +41,16 @@ export default function LoginForm({ setModalOpen }) {
   const handleSubmit = async ({ email, password }) => {
     setLoading(true);
     setErrMessage("");
-    try {
-      const response = await axios.post(
-        "/accounts/authenticate",
-        {
-          email,
-          password,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      setUser(response.data);
-      setModalOpen(false);
-    } catch (err) {
-      setLoading(false);
-      setErrMessage(err?.response?.data.message);
-    }
+
+    await AuthService.login(email, password)
+      .then((response) => {
+        setUser(response.data);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setErrMessage(err?.response?.data.message);
+      });
   };
 
   const formik = useFormik({

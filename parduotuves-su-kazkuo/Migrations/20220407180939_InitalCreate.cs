@@ -19,7 +19,6 @@ namespace parduotuvessukazkuo.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AcceptTerms = table.Column<bool>(type: "bit", nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
                     VerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Verified = table.Column<DateTime>(type: "datetime2", nullable: true),

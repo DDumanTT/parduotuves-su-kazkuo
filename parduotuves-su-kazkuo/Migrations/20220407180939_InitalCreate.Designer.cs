@@ -32,9 +32,6 @@ namespace parduotuvessukazkuo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("AcceptTerms")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 

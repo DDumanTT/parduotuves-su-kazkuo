@@ -10,6 +10,9 @@ import RegisterPage from "./pages/RegisterPage";
 import ShopsPage from "./pages/shops/ShopsPage";
 import ShopsCreate from "./pages/shops/ShopsCreate";
 import ShopsEdit from "./pages/shops/ShopsEdit";
+import UsersPage from "./pages/users/UsersPage";
+import UsersCreate from "./pages/users/UsersCreate";
+import UsersEdit from "./pages/users/UsersEdit";
 
 export default function App() {
   return (
@@ -19,7 +22,7 @@ export default function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/*" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="shops">
             <Route
@@ -32,6 +35,18 @@ export default function App() {
             />
             <Route path="create" element={<ShopsCreate />} />
             <Route path="edit/:shopId" element={<ShopsEdit />} />
+          </Route>
+          <Route path="users">
+            <Route
+              index
+              element={
+                <RequireAuth allowedRole="Admin">
+                  <UsersPage />
+                </RequireAuth>
+              }
+            />
+            <Route path="create" element={<UsersCreate />} />
+            <Route path="edit/:shopId" element={<UsersEdit />} />
           </Route>
           <Route path="about" element={<AboutPage />} />
         </Route>

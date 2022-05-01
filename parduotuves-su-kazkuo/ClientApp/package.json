@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@googlemaps/react-wrapper": "^1.1.32",
+    "@googlemaps/typescript-guards": "^1.0.14",
     "@inlet/react-pixi": "^6.6.5",
     "@react-hook/size": "^2.1.2",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.0",
+    "fast-equals": "^3.0.2",
     "formik": "^2.2.9",
     "http-proxy-middleware": "^0.19.1",
     "jquery": "^3.5.1",

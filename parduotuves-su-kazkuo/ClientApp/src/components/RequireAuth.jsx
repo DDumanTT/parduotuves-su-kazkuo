@@ -5,7 +5,7 @@ export default function RequireAuth({ allowedRole, children }) {
   const { user } = useAuth();
   const location = useLocation();
 
-  if (!user) {
+  if (!user || !localStorage.getItem("user")) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

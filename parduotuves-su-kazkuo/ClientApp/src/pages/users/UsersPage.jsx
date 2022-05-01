@@ -1,34 +1,30 @@
 import { useState, useEffect } from "react";
 import { Table, Button } from "reactstrap";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import { axiosAuth } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import DelModal from "../../components/DelModal";
-import ShopsCreate from "./ShopsCreate";
-import ShopsEdit from "./ShopsEdit";
+import { getUsers, deleteUser } from "./UsersRequests";
 
-export default function DataTable() {
-  const [shops, setShops] = useState([]);
+export default function UsersPage() {
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
   const deleteItem = (id) => {
-    axiosAuth
-      .delete(`/shops/${id}`, {
-        headers: { Authorization: `Bearer ${user.jwtToken}` },
-      })
+    deleteUser(id)
       .then((response) => {
-        setShops((prev) => prev.filter((shop) => shop.id !== id));
+        setUsers((prev) => prev.filter((user) => user.id !== id));
       })
       .catch((err) => console.log(err.response.data));
   };
 
   useEffect(() => {
     setLoading(true);
-    axiosAuth
-      .get("/shops", { headers: { Authorization: `Bearer ${user.jwtToken}` } })
+    getUsers()
       .then((response) => {
-        setShops(response.data);
+        setUsers(response.data);
         setLoading(false);
       })
       .catch((err) => console.log(err.response.data));
@@ -36,26 +32,38 @@ export default function DataTable() {
 
   return (
     <>
-      <h1>Shops</h1>
+      <h1>Users</h1>
       <Table responsive hover>
         <thead>
           <tr>
             <th>Id</th>
-            <th>Name</th>
-            {/* <th>Coordinates</th> */}
-            <th>Address</th>
-            {/* <th>Website</th> */}
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Created</th>
+            <th>Updated</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {shops.map((item) => {
+          {users.map((item) => {
+            console.log(item);
+            const created = item.created
+              ? new Date(item.created).toUTCString()
+              : "-";
+            const updated = item.updated
+              ? new Date(item.updated).toUTCString()
+              : "-";
             return (
               <tr key={item.id}>
                 <th scope="row">{item.id}</th>
-                <td>{item.name}</td>
-                {/* <td>{item.coordinates}</td> */}
-                <td>{item.address}</td>
+                <td>{item.firstName ?? "-"}</td>
+                <td>{item.lastName ?? "-"}</td>
+                <td>{item.email}</td>
+                <td>{item.role}</td>
+                <td>{created}</td>
+                <td>{updated}</td>
                 {/* <td>{item.website}</td> */}
                 <td>
                   <div style={{ width: "110px" }}>

@@ -12,8 +12,8 @@ using Parduotuves.Helpers;
 namespace parduotuvessukazkuo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220407203959_AddShops")]
-    partial class AddShops
+    [Migration("20220501172645_RemoveAcceptTerms")]
+    partial class RemoveAcceptTerms
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,6 +72,17 @@ namespace parduotuvessukazkuo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Created = new DateTime(2022, 5, 1, 17, 26, 45, 529, DateTimeKind.Utc).AddTicks(3846),
+                            Email = "admin@parduotuves.com",
+                            PasswordHash = "$2a$11$DniCp4c8Z17TznYqV8eGGueAETULUxvqi/aR3YXUWPxvk5cTeUToC",
+                            Role = 0,
+                            Verified = new DateTime(2022, 5, 1, 17, 26, 45, 529, DateTimeKind.Utc).AddTicks(3849)
+                        });
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Item", b =>

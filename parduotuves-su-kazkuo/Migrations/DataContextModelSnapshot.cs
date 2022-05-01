@@ -30,9 +30,6 @@ namespace parduotuvessukazkuo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("AcceptTerms")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -73,6 +70,17 @@ namespace parduotuvessukazkuo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Created = new DateTime(2022, 5, 1, 17, 26, 45, 529, DateTimeKind.Utc).AddTicks(3846),
+                            Email = "admin@parduotuves.com",
+                            PasswordHash = "$2a$11$DniCp4c8Z17TznYqV8eGGueAETULUxvqi/aR3YXUWPxvk5cTeUToC",
+                            Role = 0,
+                            Verified = new DateTime(2022, 5, 1, 17, 26, 45, 529, DateTimeKind.Utc).AddTicks(3849)
+                        });
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Item", b =>

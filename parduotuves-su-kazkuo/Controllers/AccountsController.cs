@@ -23,7 +23,9 @@ public class AccountsController : BaseController
     public ActionResult<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
         var response = _accountService.Authenticate(model, ipAddress());
-        setTokenCookie(response.RefreshToken);
+        //setTokenCookie(response.RefreshToken);
+        setRefreshTokenCookie(response.RefreshToken);
+        setJwtTokenCookie(response.JwtToken);
         return Ok(response);
     }
 
@@ -34,7 +36,8 @@ public class AccountsController : BaseController
         var refreshToken = Request.Cookies["refreshToken"];
         var response = _accountService.RefreshToken(refreshToken, ipAddress());
         if (response == null) return Unauthorized(new { message = "Unauthorized" });
-        setTokenCookie(response.RefreshToken);
+        setRefreshTokenCookie(response.RefreshToken);
+        setJwtTokenCookie(response.JwtToken);
         return Ok(response);
     }
 
@@ -150,7 +153,7 @@ public class AccountsController : BaseController
 
     // helper methods
 
-    private void setTokenCookie(string token)
+    private void setRefreshTokenCookie(string token)
     {
         var cookieOptions = new CookieOptions
         {
@@ -158,6 +161,16 @@ public class AccountsController : BaseController
             Expires = DateTime.UtcNow.AddDays(7)
         };
         Response.Cookies.Append("refreshToken", token, cookieOptions);
+    }
+
+    private void setJwtTokenCookie(string token)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTime.UtcNow.AddMinutes(15)
+        };
+        Response.Cookies.Append("jwtToken", token, cookieOptions);
     }
 
     private string ipAddress()

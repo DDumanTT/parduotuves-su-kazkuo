@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Parduotuves.Entities;
-namespace Parduotuves.Helpers;
+﻿namespace Parduotuves.Helpers;
 
+using Microsoft.EntityFrameworkCore;
+using Parduotuves.Entities;
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using Parduotuves.Entities;
 
 public class DataContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; }
+    public DbSet<Shop> Shop { get; set; }
 
     private readonly IConfiguration Configuration;
 
@@ -22,5 +24,30 @@ public class DataContext : DbContext
         options.UseSqlServer(Configuration.GetConnectionString("DevConnection"));
     }
 
-    public DbSet<Parduotuves.Entities.Shop> Shop { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Account>().HasData(new Account
+        {
+            Id = -1,
+            Email = "admin@parduotuves.com",
+            PasswordHash = BCrypt.HashPassword("password"),
+            Role = Role.Admin,
+            Created = DateTime.UtcNow,
+            Verified = DateTime.UtcNow
+        });
+
+        //int id = 1;
+        //foreach (int page in Enum.GetValues(typeof(Page)))
+        //{
+        //    modelBuilder.Entity<PageContent>().HasData(new PageContent
+        //    {
+        //        Id = id++,
+        //        PageName = (Page)page,
+        //        Content = "",
+        //    });
+
+        //}
+
+    }
+
 }
