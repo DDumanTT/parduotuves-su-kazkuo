@@ -23,7 +23,6 @@ public class AccountsController : BaseController
     public ActionResult<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
         var response = _accountService.Authenticate(model, ipAddress());
-        //setTokenCookie(response.RefreshToken);
         setRefreshTokenCookie(response.RefreshToken);
         setJwtTokenCookie(response.JwtToken);
         return Ok(response);

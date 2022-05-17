@@ -17,6 +17,8 @@ public class Account
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
     public List<RefreshToken> RefreshTokens { get; set; }
+    public List<Ticket>? Tickets { get; set; }
+    public List<Auction>? Auctions { get; set; }
 
     public bool OwnsToken(string token)
     {

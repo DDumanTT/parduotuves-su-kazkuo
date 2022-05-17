@@ -68,6 +68,17 @@ public class AccountService : IAccountService
         // remove old refresh tokens from account
         removeOldRefreshTokens(account);
 
+        bool loggedInToday = true;
+
+        if (account.Updated != null && DateTime.UtcNow.Subtract((DateTime)account.Updated).Days > 1)
+        {
+            loggedInToday = false;
+            var ticket = new Ticket{ Title = "Cool ticket"};
+            account.Tickets.Add(ticket);
+        }
+
+        account.Updated = DateTime.UtcNow;
+
         // save changes to db
         _context.Update(account);
         _context.SaveChanges();
@@ -75,6 +86,8 @@ public class AccountService : IAccountService
         var response = _mapper.Map<AuthenticateResponse>(account);
         response.JwtToken = jwtToken;
         response.RefreshToken = refreshToken.Token;
+        response.LoggedInToday = loggedInToday;
+
         return response;
     }
 

@@ -44,6 +44,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Entities\NewFile.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>
 

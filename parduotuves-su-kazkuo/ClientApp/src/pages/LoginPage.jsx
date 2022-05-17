@@ -45,7 +45,7 @@ export default function LoginPage() {
     await AuthService.login(email, password)
       .then((response) => {
         setUser(response.data);
-        navigate(-1);
+        navigate("..");
       })
       .catch((err) => {
         setLoading(false);

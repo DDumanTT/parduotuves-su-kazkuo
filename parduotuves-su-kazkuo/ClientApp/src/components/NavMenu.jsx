@@ -6,11 +6,13 @@ import {
   AccordionBody,
   AccordionItem,
   AccordionHeader,
+  UncontrolledAlert,
 } from "reactstrap";
 import { Link, useLocation } from "react-router-dom";
 
 import UserActions from "./UserActions";
 import useAuth from "../hooks/useAuth";
+import { useEffect, useState } from "react";
 
 function MenuItem({ to, children, section, ...rest }) {
   let location = useLocation();
@@ -30,6 +32,13 @@ function MenuItem({ to, children, section, ...rest }) {
 
 export default function NavMenu() {
   const { user } = useAuth();
+  const [loggedInToday, setLoggedInToday] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      setLoggedInToday(user.loggedInToday);
+    }
+  }, [user]);
 
   return (
     <>
@@ -39,6 +48,9 @@ export default function NavMenu() {
       <ListGroup flush className="flex-grow-1">
         <MenuItem to="/" className="fw-bold">
           Home
+        </MenuItem>
+        <MenuItem to="/auctions" className="fw-bold">
+          Auctions
         </MenuItem>
         {user && user.role === "Admin" ? (
           <UncontrolledAccordion flush stayOpen defaultOpen={["1", "2"]}>
@@ -67,6 +79,12 @@ export default function NavMenu() {
           About
         </MenuItem>
       </ListGroup>
+      {!loggedInToday && (
+        <UncontrolledAlert>
+          <h6 className="alert-heading">Congratulations!</h6>
+          You received a free lottery spin!
+        </UncontrolledAlert>
+      )}
       <UserActions />
     </>
   );
