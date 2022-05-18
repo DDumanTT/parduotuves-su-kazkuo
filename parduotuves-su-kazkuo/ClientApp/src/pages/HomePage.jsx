@@ -52,6 +52,7 @@ export default function HomePage() {
                     if (status === "OK") {
                       ss[i].distance =
                         response.rows[0].elements[0].distance.value / 1000;
+                      setShops((prev) => [...prev, ss[i]]);
                     }
                   }
                 );
@@ -59,7 +60,6 @@ export default function HomePage() {
             }
           );
         });
-        setShops(ss);
       });
   }, [map, location]);
 
