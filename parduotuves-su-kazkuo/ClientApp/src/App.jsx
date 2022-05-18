@@ -43,7 +43,7 @@ export default function App() {
               <Route
                 index
                 element={
-                  <RequireAuth allowedRole="Admin">
+                  <RequireAuth allowedRoles={["Admin"]}>
                     <ShopsPage />
                   </RequireAuth>
                 }
@@ -55,7 +55,7 @@ export default function App() {
               <Route
                 index
                 element={
-                  <RequireAuth allowedRole="Admin">
+                  <RequireAuth allowedRoles={["Admin"]}>
                     <UsersPage />
                   </RequireAuth>
                 }
