@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parduotuves.Helpers;
 
@@ -11,9 +12,10 @@ using Parduotuves.Helpers;
 namespace parduotuvessukazkuo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220518094503_cgvhjyughvghjfghcfgyhjfghfgtvyh")]
+    partial class cgvhjyughvghjfghcfgyhjfghfgtvyh
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,9 +44,6 @@ namespace parduotuvessukazkuo.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Money")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -78,12 +77,11 @@ namespace parduotuvessukazkuo.Migrations
                         new
                         {
                             Id = -1,
-                            Created = new DateTime(2022, 5, 18, 11, 36, 25, 700, DateTimeKind.Utc).AddTicks(6970),
+                            Created = new DateTime(2022, 5, 18, 9, 45, 3, 645, DateTimeKind.Utc).AddTicks(658),
                             Email = "admin@parduotuves.com",
-                            Money = 9999999m,
-                            PasswordHash = "$2a$11$IEhV3TcOB5CodPuSieKK5eU9XAWKRl/4f3icnjssuu4ixOX2rRQca",
+                            PasswordHash = "$2a$11$3VjlKl0IUy5nRekUOYa0gu2Zy3kOKCI.TuLHsDNvd84aIGIjWRGJK",
                             Role = 0,
-                            Verified = new DateTime(2022, 5, 18, 11, 36, 25, 700, DateTimeKind.Utc).AddTicks(6977)
+                            Verified = new DateTime(2022, 5, 18, 9, 45, 3, 645, DateTimeKind.Utc).AddTicks(668)
                         });
                 });
 
@@ -94,6 +92,9 @@ namespace parduotuvessukazkuo.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -106,6 +107,8 @@ namespace parduotuvessukazkuo.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("PrizeId");
 
@@ -120,9 +123,6 @@ namespace parduotuvessukazkuo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
@@ -130,8 +130,6 @@ namespace parduotuvessukazkuo.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
 
                     b.HasIndex("AuctionId");
 
@@ -321,6 +319,10 @@ namespace parduotuvessukazkuo.Migrations
 
             modelBuilder.Entity("Parduotuves.Entities.Auction", b =>
                 {
+                    b.HasOne("Parduotuves.Entities.Account", null)
+                        .WithMany("Auctions")
+                        .HasForeignKey("AccountId");
+
                     b.HasOne("Parduotuves.Entities.Prize", "Prize")
                         .WithMany()
                         .HasForeignKey("PrizeId")
@@ -332,17 +334,9 @@ namespace parduotuvessukazkuo.Migrations
 
             modelBuilder.Entity("Parduotuves.Entities.Bid", b =>
                 {
-                    b.HasOne("Parduotuves.Entities.Account", "Account")
-                        .WithMany("Bids")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Parduotuves.Entities.Auction", null)
                         .WithMany("Bid")
                         .HasForeignKey("AuctionId");
-
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Item", b =>
@@ -382,7 +376,7 @@ namespace parduotuvessukazkuo.Migrations
 
             modelBuilder.Entity("Parduotuves.Entities.Account", b =>
                 {
-                    b.Navigation("Bids");
+                    b.Navigation("Auctions");
 
                     b.Navigation("Tickets");
                 });

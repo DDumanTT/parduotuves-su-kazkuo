@@ -15,6 +15,7 @@ import UsersCreate from "./pages/users/UsersCreate";
 import UsersEdit from "./pages/users/UsersEdit";
 import AuctionPage from "./pages/auctions/AuctionPage.jsx";
 
+// TODO: protect routes
 export default function App() {
   return (
     <AuthProvider>

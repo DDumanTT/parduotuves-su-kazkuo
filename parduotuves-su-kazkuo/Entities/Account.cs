@@ -1,4 +1,6 @@
-﻿namespace Parduotuves.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Parduotuves.Entities;
 
 public class Account
 {
@@ -6,6 +8,7 @@ public class Account
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string Email { get; set; }
+    [JsonIgnore]
     public string? PasswordHash { get; set; }
     public Role Role { get; set; }
     public string? VerificationToken { get; set; }
@@ -16,9 +19,11 @@ public class Account
     public DateTime? PasswordReset { get; set; }
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
+    [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; }
     public List<Ticket>? Tickets { get; set; }
-    public List<Auction>? Auctions { get; set; }
+    public List<Bid>? Bids { get; set; }
+    public decimal Money { get; set; } = 0m;
 
     public bool OwnsToken(string token)
     {

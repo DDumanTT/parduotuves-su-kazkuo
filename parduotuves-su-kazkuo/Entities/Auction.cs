@@ -1,4 +1,6 @@
-﻿namespace Parduotuves.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Parduotuves.Entities;
 
 public class Auction
 {

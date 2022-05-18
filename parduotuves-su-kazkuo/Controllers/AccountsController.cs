@@ -1,10 +1,10 @@
 ﻿namespace Parduotuves.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Parduotuves.Authorization;
-using Parduotuves.Entities;
-using Parduotuves.Models.Accounts;
-using Parduotuves.Services;
+using Authorization;
+using Entities;
+using Models.Accounts;
+using Services;
 
 [Authorize]
 [ApiController]

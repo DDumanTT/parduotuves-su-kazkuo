@@ -6,6 +6,7 @@ import { axiosAuth } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import DelModal from "../../components/DelModal";
 import { getUsers, deleteUser } from "./UsersRequests";
+import Roles from "./Roles";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -67,9 +68,14 @@ export default function UsersPage() {
                 {/* <td>{item.website}</td> */}
                 <td>
                   <div style={{ width: "110px" }}>
-                    <Button tag={Link} to={`edit/${item.id}`} color="warning">
+                    <Button
+                      tag={Link}
+                      to={`edit/${item.id}`}
+                      color="warning"
+                      style={{ marginRight: 5 }}
+                    >
                       Edit
-                    </Button>{" "}
+                    </Button>
                     <DelModal item={item} onConfirm={deleteItem} />
                   </div>
                 </td>
