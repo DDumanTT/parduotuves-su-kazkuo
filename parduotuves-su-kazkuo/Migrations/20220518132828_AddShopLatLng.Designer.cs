@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parduotuves.Helpers;
 
@@ -11,9 +12,10 @@ using Parduotuves.Helpers;
 namespace parduotuvessukazkuo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220518132828_AddShopLatLng")]
+    partial class AddShopLatLng
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,11 +77,11 @@ namespace parduotuvessukazkuo.Migrations
                         new
                         {
                             Id = -1,
-                            Created = new DateTime(2022, 5, 18, 13, 57, 53, 690, DateTimeKind.Utc).AddTicks(8420),
+                            Created = new DateTime(2022, 5, 18, 13, 28, 28, 643, DateTimeKind.Utc).AddTicks(3244),
                             Email = "admin@parduotuves.com",
-                            PasswordHash = "$2a$11$7qkUti5XRybDBz1f9u3GkeGXxJ2YdbSXXlI2bsqBYT6YBoYnwOnsm",
+                            PasswordHash = "$2a$11$3RY09gAT6Q4FqlpPgo7.x.jUKDmqs4WVLmXDUeyOLYDe9S002ej9u",
                             Role = 0,
-                            Verified = new DateTime(2022, 5, 18, 13, 57, 53, 690, DateTimeKind.Utc).AddTicks(8424)
+                            Verified = new DateTime(2022, 5, 18, 13, 28, 28, 643, DateTimeKind.Utc).AddTicks(3248)
                         });
                 });
 
@@ -141,10 +143,6 @@ namespace parduotuvessukazkuo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlaceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

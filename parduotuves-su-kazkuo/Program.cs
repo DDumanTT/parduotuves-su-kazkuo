@@ -67,7 +67,9 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 // custom jwt auth middleware
 app.UseMiddleware<JwtMiddleware>();
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
+app.UseRouting();
 app.MapControllers();
 
 app.Run();

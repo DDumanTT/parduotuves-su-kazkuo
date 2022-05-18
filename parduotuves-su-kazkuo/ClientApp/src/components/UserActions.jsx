@@ -26,7 +26,7 @@ export default function UserActions() {
 
   return (
     <>
-      <div className="mb-2 w-100">
+      <div className="hstack mb-2 w-100">
         {!user ? (
           <>
             <Button tag={Link} to="/register" className="w-100" outline>

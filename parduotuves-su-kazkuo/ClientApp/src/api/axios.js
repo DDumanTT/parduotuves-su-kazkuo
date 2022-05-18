@@ -5,6 +5,7 @@ const BASE_URL = `${window.location.protocol}//localhost:7090/api`;
 
 export default axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
 });
 
 export const axiosAuth = axios.create({
