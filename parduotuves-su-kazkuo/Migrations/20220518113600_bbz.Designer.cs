@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parduotuves.Helpers;
 
@@ -11,9 +12,10 @@ using Parduotuves.Helpers;
 namespace parduotuvessukazkuo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220518113600_bbz")]
+    partial class bbz
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,12 +80,12 @@ namespace parduotuvessukazkuo.Migrations
                         new
                         {
                             Id = -1,
-                            Created = new DateTime(2022, 5, 18, 11, 36, 25, 700, DateTimeKind.Utc).AddTicks(6970),
+                            Created = new DateTime(2022, 5, 18, 11, 36, 0, 619, DateTimeKind.Utc).AddTicks(9923),
                             Email = "admin@parduotuves.com",
                             Money = 9999999m,
-                            PasswordHash = "$2a$11$IEhV3TcOB5CodPuSieKK5eU9XAWKRl/4f3icnjssuu4ixOX2rRQca",
+                            PasswordHash = "$2a$11$HJGn6UGdsGwr0EjZ6Mm07.A35w/d0ZhkQWpvFpb4QOg810hA3qm9S",
                             Role = 0,
-                            Verified = new DateTime(2022, 5, 18, 11, 36, 25, 700, DateTimeKind.Utc).AddTicks(6977)
+                            Verified = new DateTime(2022, 5, 18, 11, 36, 0, 619, DateTimeKind.Utc).AddTicks(9930)
                         });
                 });
 
@@ -120,7 +122,7 @@ namespace parduotuvessukazkuo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AccountId")
+                    b.Property<int?>("AccountId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Amount")
@@ -207,19 +209,10 @@ namespace parduotuvessukazkuo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Latitude")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Longitude")
-                        .IsRequired()
+                    b.Property<string>("Coordinates")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlaceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -341,17 +334,13 @@ namespace parduotuvessukazkuo.Migrations
 
             modelBuilder.Entity("Parduotuves.Entities.Bid", b =>
                 {
-                    b.HasOne("Parduotuves.Entities.Account", "Account")
+                    b.HasOne("Parduotuves.Entities.Account", null)
                         .WithMany("Bids")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccountId");
 
                     b.HasOne("Parduotuves.Entities.Auction", null)
                         .WithMany("Bid")
                         .HasForeignKey("AuctionId");
-
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Item", b =>

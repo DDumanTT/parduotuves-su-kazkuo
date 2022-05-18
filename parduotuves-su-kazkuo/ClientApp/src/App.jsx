@@ -14,9 +14,11 @@ import UsersPage from "./pages/users/UsersPage";
 import UsersCreate from "./pages/users/UsersCreate";
 import UsersEdit from "./pages/users/UsersEdit";
 import { useLoadScript } from "@react-google-maps/api";
+import AuctionPage from "./pages/auctions/AuctionPage.jsx";
 
 const libraries = ["places"];
 
+// TODO: protect routes
 export default function App() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY2,

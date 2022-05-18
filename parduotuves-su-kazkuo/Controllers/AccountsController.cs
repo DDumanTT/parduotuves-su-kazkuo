@@ -1,10 +1,10 @@
 ﻿namespace Parduotuves.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using Parduotuves.Authorization;
-using Parduotuves.Entities;
-using Parduotuves.Models.Accounts;
-using Parduotuves.Services;
+using Authorization;
+using Entities;
+using Models.Accounts;
+using Services;
 
 [Authorize]
 [ApiController]
@@ -23,7 +23,6 @@ public class AccountsController : BaseController
     public ActionResult<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {
         var response = _accountService.Authenticate(model, ipAddress());
-        //setTokenCookie(response.RefreshToken);
         setRefreshTokenCookie(response.RefreshToken);
         setJwtTokenCookie(response.JwtToken);
         return Ok(response);

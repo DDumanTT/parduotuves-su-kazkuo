@@ -33,6 +33,9 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 var app = builder.Build();
 
 // migrate any database changes on startup (includes initial db creation)
