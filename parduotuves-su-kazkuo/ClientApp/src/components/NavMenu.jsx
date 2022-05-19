@@ -52,6 +52,9 @@ export default function NavMenu() {
         <MenuItem to="/auctions" className="fw-bold">
           Auctions
         </MenuItem>
+        <MenuItem to="/lottery" className="fw-bold">
+          Lottery
+        </MenuItem>
         {user && user.role === "Admin" ? (
           <UncontrolledAccordion flush stayOpen defaultOpen={["1", "2"]}>
             <AccordionItem>

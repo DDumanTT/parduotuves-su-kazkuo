@@ -21,7 +21,7 @@ public class Account
     public DateTime? Updated { get; set; }
     [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; }
-    public List<Ticket>? Tickets { get; set; }
+    public List<Ticket>? Tickets { get; set; } = new List<Ticket>();
     public List<Bid>? Bids { get; set; }
     public decimal Money { get; set; } = 0m;
 

@@ -18,6 +18,18 @@ public class AccountsController : BaseController
         _accountService = accountService;
     }
 
+    //[HttpGet("tickets")]
+    //public IActionResult GetTicketsCount()
+    //{
+    //    //var count = 0;
+    //    //foreach (var ticket in Account.Tickets)
+    //    //{
+    //    //    count++;
+    //    //}
+
+    //    return Ok(count);
+    //}
+
     [AllowAnonymous]
     [HttpPost("authenticate")]
     public ActionResult<AuthenticateResponse> Authenticate(AuthenticateRequest model)
