@@ -15,6 +15,7 @@ import UsersCreate from "./pages/users/UsersCreate";
 import UsersEdit from "./pages/users/UsersEdit";
 import { useLoadScript } from "@react-google-maps/api";
 import AuctionPage from "./pages/auctions/AuctionPage.jsx";
+import LotteryPage from "./pages/LotteryPage";
 
 const libraries = ["places"];
 
@@ -64,6 +65,7 @@ export default function App() {
               <Route path="create" element={<UsersCreate />} />
               <Route path="edit/:shopId" element={<UsersEdit />} />
             </Route>
+            <Route path="lottery" element={<LotteryPage />} />
             <Route path="about" element={<AboutPage />} />
           </Route>
         </Routes>

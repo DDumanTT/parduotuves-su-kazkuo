@@ -11,6 +11,7 @@
     <SpaProxyServerUrl>https://localhost:44429</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e6b7cf7b-13b3-4d4c-a0cb-cd0c822b780c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -52,6 +53,10 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebScraper\WebScraper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
