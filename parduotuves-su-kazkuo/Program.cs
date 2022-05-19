@@ -4,6 +4,7 @@ using System.Text;
 using Parduotuves.Authorization;
 using Parduotuves.Helpers;
 using Parduotuves.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,9 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 
@@ -67,7 +71,9 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 // custom jwt auth middleware
 app.UseMiddleware<JwtMiddleware>();
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
+app.UseRouting();
 app.MapControllers();
 
 app.Run();

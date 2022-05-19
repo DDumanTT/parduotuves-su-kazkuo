@@ -10,4 +10,5 @@ public class AccountResponse
     public string Role { get; set; }
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
+    public decimal Money { get; set; }
 }

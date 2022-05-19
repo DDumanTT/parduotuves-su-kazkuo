@@ -1,15 +1,16 @@
 ﻿namespace Parduotuves.Helpers;
 
 using Microsoft.EntityFrameworkCore;
-using Parduotuves.Entities;
+using Entities;
 using BCrypt.Net;
-using Microsoft.EntityFrameworkCore;
-using Parduotuves.Entities;
 
 public class DataContext : DbContext
 {
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Shop> Shop { get; set; }
+    public DbSet<Auction> Auction { get; set; }
+    public DbSet<Bid> Bid { get; set; }
+    public DbSet<Prize> Prize { get; set; }
 
     private readonly IConfiguration Configuration;
 
@@ -33,7 +34,8 @@ public class DataContext : DbContext
             PasswordHash = BCrypt.HashPassword("password"),
             Role = Role.Admin,
             Created = DateTime.UtcNow,
-            Verified = DateTime.UtcNow
+            Verified = DateTime.UtcNow,
+            Money = 9999999m
         });
 
         //int id = 1;

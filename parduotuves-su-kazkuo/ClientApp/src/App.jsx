@@ -13,53 +13,61 @@ import ShopsEdit from "./pages/shops/ShopsEdit";
 import UsersPage from "./pages/users/UsersPage";
 import UsersCreate from "./pages/users/UsersCreate";
 import UsersEdit from "./pages/users/UsersEdit";
+import { useLoadScript } from "@react-google-maps/api";
 import AuctionPage from "./pages/auctions/AuctionPage.jsx";
 
+const libraries = ["places"];
+
+// TODO: protect routes
 export default function App() {
-  return (
-    <AuthProvider>
-      <Routes>
-        <Route element={<LoginLayout />}>
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
-        </Route>
-        <Route path="/*" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route
-            path="auctions"
-            element={
-              <RequireAuth allowedRoles={["Admin", "User"]}>
-                <AuctionPage />
-              </RequireAuth>
-            }
-          />
-          <Route path="shops">
-            <Route
-              index
-              element={
-                <RequireAuth allowedRoles={["Admin"]}>
-                  <ShopsPage />
-                </RequireAuth>
-              }
-            />
-            <Route path="create" element={<ShopsCreate />} />
-            <Route path="edit/:shopId" element={<ShopsEdit />} />
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY2,
+    libraries,
+  });
+
+  if (loadError) {
+    return <div>Map cannot be loaded right now, sorry.</div>;
+  }
+
+  if (isLoaded) {
+    return (
+      <AuthProvider>
+        <Routes>
+          <Route element={<LoginLayout />}>
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Route>
-          <Route path="users">
-            <Route
-              index
-              element={
-                <RequireAuth allowedRoles={["Admin"]}>
-                  <UsersPage />
-                </RequireAuth>
-              }
-            />
-            <Route path="create" element={<UsersCreate />} />
-            <Route path="edit/:shopId" element={<UsersEdit />} />
+          <Route path="/*" element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="shops">
+              <Route
+                index
+                element={
+                  <RequireAuth allowedRoles={["Admin"]}>
+                    <ShopsPage />
+                  </RequireAuth>
+                }
+              />
+              <Route path="create" element={<ShopsCreate />} />
+              <Route path="edit/:shopId" element={<ShopsEdit />} />
+            </Route>
+            <Route path="users">
+              <Route
+                index
+                element={
+                  <RequireAuth allowedRoles={["Admin"]}>
+                    <UsersPage />
+                  </RequireAuth>
+                }
+              />
+              <Route path="create" element={<UsersCreate />} />
+              <Route path="edit/:shopId" element={<UsersEdit />} />
+            </Route>
+            <Route path="about" element={<AboutPage />} />
           </Route>
-          <Route path="about" element={<AboutPage />} />
-        </Route>
-      </Routes>
-    </AuthProvider>
-  );
+        </Routes>
+      </AuthProvider>
+    );
+  }
+  return <></>;
 }

@@ -13,6 +13,7 @@ public class UpdateRequest
     //public string Title { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public decimal Money { get; set; } = 0m;
 
     [EnumDataType(typeof(Role))]
     public string Role
@@ -29,14 +30,14 @@ public class UpdateRequest
     }
 
     [MinLength(6)]
-    public string Password
+    public string? Password
     {
         get => _password;
         set => _password = replaceEmptyWithNull(value);
     }
 
     [Compare("Password")]
-    public string ConfirmPassword
+    public string? ConfirmPassword
     {
         get => _confirmPassword;
         set => _confirmPassword = replaceEmptyWithNull(value);

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parduotuves.Helpers;
 
@@ -11,9 +12,10 @@ using Parduotuves.Helpers;
 namespace parduotuvessukazkuo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220518132828_AddShopLatLng")]
+    partial class AddShopLatLng
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,9 +44,6 @@ namespace parduotuvessukazkuo.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Money")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -78,64 +77,12 @@ namespace parduotuvessukazkuo.Migrations
                         new
                         {
                             Id = -1,
-                            Created = new DateTime(2022, 5, 18, 11, 36, 25, 700, DateTimeKind.Utc).AddTicks(6970),
+                            Created = new DateTime(2022, 5, 18, 13, 28, 28, 643, DateTimeKind.Utc).AddTicks(3244),
                             Email = "admin@parduotuves.com",
-                            Money = 9999999m,
-                            PasswordHash = "$2a$11$IEhV3TcOB5CodPuSieKK5eU9XAWKRl/4f3icnjssuu4ixOX2rRQca",
+                            PasswordHash = "$2a$11$3RY09gAT6Q4FqlpPgo7.x.jUKDmqs4WVLmXDUeyOLYDe9S002ej9u",
                             Role = 0,
-                            Verified = new DateTime(2022, 5, 18, 11, 36, 25, 700, DateTimeKind.Utc).AddTicks(6977)
+                            Verified = new DateTime(2022, 5, 18, 13, 28, 28, 643, DateTimeKind.Utc).AddTicks(3248)
                         });
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Auction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PrizeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PrizeId");
-
-                    b.ToTable("Auction");
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Bid", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("AuctionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("AuctionId");
-
-                    b.ToTable("Bid");
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Item", b =>
@@ -175,26 +122,6 @@ namespace parduotuvessukazkuo.Migrations
                     b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("Parduotuves.Entities.Prize", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("WinDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Prize");
-                });
-
             modelBuilder.Entity("Parduotuves.Entities.Shop", b =>
                 {
                     b.Property<int>("Id")
@@ -219,10 +146,6 @@ namespace parduotuvessukazkuo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PlaceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("WebsiteId")
                         .HasColumnType("int");
 
@@ -231,28 +154,6 @@ namespace parduotuvessukazkuo.Migrations
                     b.HasIndex("WebsiteId");
 
                     b.ToTable("Shop");
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("Ticket");
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Website", b =>
@@ -328,32 +229,6 @@ namespace parduotuvessukazkuo.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Parduotuves.Entities.Auction", b =>
-                {
-                    b.HasOne("Parduotuves.Entities.Prize", "Prize")
-                        .WithMany()
-                        .HasForeignKey("PrizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Prize");
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Bid", b =>
-                {
-                    b.HasOne("Parduotuves.Entities.Account", "Account")
-                        .WithMany("Bids")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Parduotuves.Entities.Auction", null)
-                        .WithMany("Bid")
-                        .HasForeignKey("AuctionId");
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("Parduotuves.Entities.Item", b =>
                 {
                     b.HasOne("Parduotuves.Entities.Shop", "Shop")
@@ -376,29 +251,6 @@ namespace parduotuvessukazkuo.Migrations
                         .HasForeignKey("WebsiteId");
 
                     b.Navigation("Website");
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Ticket", b =>
-                {
-                    b.HasOne("Parduotuves.Entities.Account", "Account")
-                        .WithMany("Tickets")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Account", b =>
-                {
-                    b.Navigation("Bids");
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("Parduotuves.Entities.Auction", b =>
-                {
-                    b.Navigation("Bid");
                 });
 
             modelBuilder.Entity("Parduotuves.Entities.Shop", b =>
