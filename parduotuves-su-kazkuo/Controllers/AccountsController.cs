@@ -1,4 +1,7 @@
-﻿namespace Parduotuves.Controllers;
+﻿using Microsoft.EntityFrameworkCore;
+using Parduotuves.Helpers;
+
+namespace Parduotuves.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using Authorization;
@@ -11,10 +14,12 @@ using Services;
 [Route("api/[controller]")]
 public class AccountsController : BaseController
 {
+    private readonly DataContext _context;
     private readonly IAccountService _accountService;
 
-    public AccountsController(IAccountService accountService)
+    public AccountsController(DataContext context, IAccountService accountService)
     {
+        _context = context;
         _accountService = accountService;
     }
 
@@ -30,13 +35,12 @@ public class AccountsController : BaseController
     //    return Ok(count);
     //}
 
-    [AllowAnonymous]
     [HttpGet("prizes")]
     public IActionResult GetPrizes()
     {
-        var prizes = _accountService.GetById(Account.Id).Prizes ?? new List<Prize>();
+        var prizes = _context.Accounts.Include(x => x.Prize).FirstOrDefault(x => x.Id == Account.Id)!.Prize;
 
-        return Ok(prizes);
+        return Ok(prizes ?? new List<Prize>());
     }
 
     [AllowAnonymous]

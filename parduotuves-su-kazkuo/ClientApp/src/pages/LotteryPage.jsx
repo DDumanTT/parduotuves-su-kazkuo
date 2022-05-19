@@ -69,7 +69,7 @@ export default function LotteryPage() {
         // design="GracefulLines"
         designOptions={{ withoutAnimation: true }}
         onPrizeDefined={handlePrizeDefined}
-        // soundWhileSpinning={"/amogus.mp3"}
+        soundWhileSpinning={"/amogus.mp3"}
       />
       <button onClick={handleStart}>Start</button>
     </>

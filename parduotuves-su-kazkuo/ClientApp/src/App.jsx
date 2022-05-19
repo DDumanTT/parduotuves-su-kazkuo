@@ -41,30 +41,32 @@ export default function App() {
           </Route>
           <Route path="/*" element={<MainLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="shops">
-              <Route
-                index
-                element={
-                  <RequireAuth allowedRoles={["Admin"]}>
-                    <ShopsPage />
-                  </RequireAuth>
-                }
-              />
+
+            <Route
+              path="shops"
+              element={<RequireAuth allowedRoles={["Admin"]} />}
+            >
+              <Route index element={<ShopsPage />} />
               <Route path="create" element={<ShopsCreate />} />
               <Route path="edit/:shopId" element={<ShopsEdit />} />
             </Route>
-            <Route path="users">
-              <Route
-                index
-                element={
-                  <RequireAuth allowedRoles={["Admin"]}>
-                    <UsersPage />
-                  </RequireAuth>
-                }
-              />
+
+            <Route
+              path="users"
+              element={<RequireAuth allowedRoles={["Admin"]} />}
+            >
+              <Route index element={<UsersPage />} />
               <Route path="create" element={<UsersCreate />} />
               <Route path="edit/:shopId" element={<UsersEdit />} />
             </Route>
+
+            <Route
+              path="auctions"
+              element={<RequireAuth allowedRoles={["Admin", "User"]} />}
+            >
+              <Route index element={<AuctionPage />} />
+            </Route>
+
             <Route path="lottery" element={<LotteryPage />} />
             <Route path="about" element={<AboutPage />} />
           </Route>

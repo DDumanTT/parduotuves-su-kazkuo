@@ -7,7 +7,8 @@ import BetModal from "../../components/BetModal";
 import moment from "moment";
 
 export default function DataTable() {
-  const [auctions, setAuctions] = useState([{bid: []}]);
+  const [auctions, setAuctions] = useState([{ bid: [] }]);
+  const [prizes, setPrizes] = useState([]);
   const [bidError, setBidError] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -15,15 +16,30 @@ export default function DataTable() {
 
   useEffect(() => {
     fetchAuctions();
+    fetchPrizes();
+    var timeout = setTimeout(() => {
+      fetchAuctions();
+      fetchPrizes();
+    }, 3000)
+
+    return () => {clearTimeout(timeout); console.log("casdad")}
   }, []);
 
   const fetchAuctions = () => {
     axiosAuth
-      .get("/auctions", {
-        headers: { Authorization: `Bearer ${user.jwtToken}` },
-      })
+      .get("/auctions")
       .then((response) => {
         setAuctions(response.data);
+      })
+      .catch((err) => console.log(err.response.data));
+  };
+
+  const fetchPrizes = () => {
+    axiosAuth
+      .get("/accounts/prizes")
+      .then((response) => {
+        console.log(response);
+        setPrizes(response.data);
       })
       .catch((err) => console.log(err.response.data));
   };
@@ -42,9 +58,9 @@ export default function DataTable() {
       .then((response) => {
         fetchAuctions();
         close();
-        setShowSuccess(true)
+        setShowSuccess(true);
         setTimeout(() => {
-          setShowSuccess(false)
+          setShowSuccess(false);
         }, 2100);
       })
       .catch((err) => {
@@ -56,47 +72,55 @@ export default function DataTable() {
   const resetAuctions = (e) => {
     e.preventDefault();
     axiosAuth
-    .delete(
-      "/auctions/",
-      {
+      .delete("/auctions/", {
         headers: { Authorization: `Bearer ${user.jwtToken}` },
-      }
-    )
-    .then((response) => {
-      axiosAuth.post("/auctions/", {
-        ExpirationDate: moment().add(10, 'minute').format(("YYYY-MM-DDTHH:mm:ss")),
-        Name: "IRL Among Us vent (aka subway vent)",
-        Bid: [],
-        Prize: {
-          Name: "Among Us vent"
-        }
-      }).then(res => {
-        axiosAuth.post("/auctions/", {
-          ExpirationDate: moment().add(5, 'minute').format(("YYYY-MM-DDTHH:mm:ss")),
-          Name: "Large yellow banana, straight from uganda.",
-          Bid: [],
-          Prize: {
-            Name: "1x Banana"
-          }
-        }).then(res => {
-          axiosAuth.post("/auctions/", {
-            ExpirationDate: moment().add(1.2, 'minute').format(("YYYY-MM-DDTHH:mm:ss")),
-            Name: "Nothing - yep, you read it right!",
+      })
+      .then((response) => {
+        axiosAuth
+          .post("/auctions/", {
+            ExpirationDate: moment()
+              .add(100, "minute")
+              .format("YYYY-MM-DDTHH:mm:ss"),
+            Name: "IRL Among Us vent (aka subway vent)",
             Bid: [],
             Prize: {
-              Name: "full 1x of nothing"
-            }
-          }).then(res => {
-            fetchAuctions();
+              Name: "Among Us vent",
+            },
           })
-        })
+          .then((res) => {
+            axiosAuth
+              .post("/auctions/", {
+                ExpirationDate: moment()
+                  .add(30, "minute")
+                  .format("YYYY-MM-DDTHH:mm:ss"),
+                Name: "Large yellow banana, straight from uganda.",
+                Bid: [],
+                Prize: {
+                  Name: "1x Banana",
+                },
+              })
+              .then((res) => {
+                axiosAuth
+                  .post("/auctions/", {
+                    ExpirationDate: moment()
+                      .add(1.2, "minute")
+                      .format("YYYY-MM-DDTHH:mm:ss"),
+                    Name: "Nothing - yep, you read it right!",
+                    Bid: [],
+                    Prize: {
+                      Name: "full 1x of nothing",
+                    },
+                  })
+                  .then((res) => {
+                    fetchAuctions();
+                  });
+              });
+          });
       })
-    })
-    .catch((err) => {
-      console.log(err.response.data);
-    });
-  }
-
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
 
   return (
     <>
@@ -123,17 +147,33 @@ export default function DataTable() {
               <tr key={item.id}>
                 <th scope="row">{item.id}</th>
                 <td>{item.name}</td>
-                <td>{item.bid.length ? Math.max(...item.bid.map((x) => x.amount)) : "None"}</td>
+                <td>
+                  {item.bid.length
+                    ? Math.max(...item.bid.map((x) => x.amount))
+                    : "None"}
+                </td>
                 {/* {console.log(item.bid.reduce((max, bid) => max.amount > bid.amount ? max : bid, {amount: 0}))} */}
-                <td>{item.bid.length ? item.bid.reduce((max, bid) => max.amount > bid.amount ? max : bid).account.email : "None"}</td>
-                <td>{moment(item.expirationDate).fromNow()}</td>
+                <td>
+                  {item.bid.length
+                    ? item.bid.reduce((max, bid) =>
+                        max.amount > bid.amount ? max : bid
+                      ).account.email
+                    : "None"}
+                </td>
+                <td>
+                  {item.active
+                    ? moment(item.expirationDate).fromNow()
+                    : "Expired"}
+                </td>
                 <td>
                   <div style={{ width: "110px" }}>
-                    <BetModal
-                      item={item}
-                      error={bidError}
-                      onConfirm={onConfirm}
-                    />
+                    {item.active && (
+                      <BetModal
+                        item={item}
+                        error={bidError}
+                        onConfirm={onConfirm}
+                      />
+                    )}
                   </div>
                 </td>
               </tr>
@@ -144,6 +184,28 @@ export default function DataTable() {
       <Button tag={Link} to="create" color="success" onClick={resetAuctions}>
         Reset auctions
       </Button>
+      <h1 style={{ marginTop: 85 }}>Your prizes: </h1>
+
+      <Table responsive hover>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Win date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {prizes.map((item) => {
+            return (
+              <tr key={item.id}>
+                <th scope="row">{item.id}</th>
+                <td>{item.name}</td>
+                <td>{moment(item.winDate).fromNow()}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
     </>
   );
 }

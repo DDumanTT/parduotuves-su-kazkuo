@@ -10,18 +10,15 @@ import { Link } from "react-router-dom";
 
 import useAuth from "../hooks/useAuth";
 import useAxiosAuth from "../hooks/useAxiosAuth";
+import AuthService from "../services/AuthService";
 
 export default function UserActions() {
   const { user, setUser } = useAuth();
   const axiosAuth = useAxiosAuth();
 
   const logout = () => {
-    axiosAuth
-      .post("/accounts/revoke-token", {})
-      .then((r) => setUser(undefined))
-      .catch((e) => {
-        console.log(e.response);
-      });
+    AuthService.logout();
+    setUser(undefined);
   };
 
   return (
@@ -42,7 +39,7 @@ export default function UserActions() {
               {user.email}
             </DropdownToggle>
             <DropdownMenu>
-              <DropdownItem onClick={() => logout()}>Atsijungti</DropdownItem>
+              <DropdownItem onClick={logout}>Atsijungti</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         )}

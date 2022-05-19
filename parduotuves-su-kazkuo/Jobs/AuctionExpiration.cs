@@ -1,4 +1,5 @@
-﻿using Parduotuves.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Parduotuves.Entities;
 using Parduotuves.Helpers;
 using Quartz;
 
@@ -19,7 +20,12 @@ namespace ParduotuvesSuKazkuo.Jobs
 
             var id = (int)scheduler.Get("id");
 
-            var auction = _context.Auction.Find(id);
+            var auction = _context.Auction
+                .Include(x => x.Bid)
+                .ThenInclude(x => x.Account)
+                .Include(x => x.Prize)
+                .FirstOrDefault(x => x.Id == id);
+
             if (auction == null)
             {
                 return Task.CompletedTask;
@@ -31,6 +37,7 @@ namespace ParduotuvesSuKazkuo.Jobs
             {
                 var user = _context.Accounts.Find(maxBidder.Account.Id)!;
                 user.Prize ??= new List<Prize>();
+                auction.Prize.WinDate = DateTime.Now;
                 user.Prize.Add(auction.Prize);
             }
 

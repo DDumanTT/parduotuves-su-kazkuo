@@ -10,7 +10,7 @@ export default function RequireAuth({ allowedRoles, children }) {
   }
 
   if (allowedRoles.includes(user?.role)) {
-    return <>{children}</>;
+    return <Outlet />;
   } else {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
