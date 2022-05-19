@@ -9,6 +9,7 @@ public class DataContext : DbContext
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Shop> Shop { get; set; }
     public DbSet<Auction> Auction { get; set; }
+    public DbSet<Ticket> Ticket { get; set; }
     public DbSet<Bid> Bid { get; set; }
     public DbSet<Prize> Prize { get; set; }
 

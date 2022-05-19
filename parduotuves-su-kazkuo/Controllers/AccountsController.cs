@@ -37,6 +37,15 @@ public class AccountsController : BaseController
         return Ok(count);
     }
 
+    [HttpDelete("spin")]
+    public IActionResult SpinLottery()
+    {
+        var tickets = _context.Accounts.Include(x => x.Tickets).FirstOrDefault(x => x.Id == Account.Id)!.Tickets;
+        _context.Remove(tickets.Last());
+        _context.SaveChanges();
+        return Ok();
+    }
+
     [HttpGet("prizes")]
     public IActionResult GetPrizes()
     {
