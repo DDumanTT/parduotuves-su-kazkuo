@@ -19,6 +19,15 @@ public class AccountsController : BaseController
     }
 
     [AllowAnonymous]
+    [HttpGet("prizes")]
+    public IActionResult GetPrizes()
+    {
+        var prizes = _accountService.GetById(Account.Id).Prizes ?? new List<Prize>();
+
+        return Ok(prizes);
+    }
+
+    [AllowAnonymous]
     [HttpPost("authenticate")]
     public ActionResult<AuthenticateResponse> Authenticate(AuthenticateRequest model)
     {

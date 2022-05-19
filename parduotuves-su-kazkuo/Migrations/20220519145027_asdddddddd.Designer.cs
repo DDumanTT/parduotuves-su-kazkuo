@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parduotuves.Helpers;
 
@@ -11,9 +12,10 @@ using Parduotuves.Helpers;
 namespace parduotuvessukazkuo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220519145027_asdddddddd")]
+    partial class asdddddddd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,12 +80,12 @@ namespace parduotuvessukazkuo.Migrations
                         new
                         {
                             Id = -1,
-                            Created = new DateTime(2022, 5, 19, 16, 59, 46, 421, DateTimeKind.Utc).AddTicks(4300),
+                            Created = new DateTime(2022, 5, 19, 14, 50, 27, 157, DateTimeKind.Utc).AddTicks(6900),
                             Email = "admin@parduotuves.com",
                             Money = 9999999m,
-                            PasswordHash = "$2a$11$8PjHx82S018emLrNhw7fvetwHTGGAWi2IBs4jo6WWfzNet9U227C.",
+                            PasswordHash = "$2a$11$vhZ7rRgn2mpmXTR/039hL.f3Py34sGRrdrCSTK19y2Wr8RyWWAEO6",
                             Role = 0,
-                            Verified = new DateTime(2022, 5, 19, 16, 59, 46, 421, DateTimeKind.Utc).AddTicks(4306)
+                            Verified = new DateTime(2022, 5, 19, 14, 50, 27, 157, DateTimeKind.Utc).AddTicks(6905)
                         });
                 });
 
@@ -186,9 +188,6 @@ namespace parduotuvessukazkuo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AccountId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -197,8 +196,6 @@ namespace parduotuvessukazkuo.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
 
                     b.ToTable("Prize");
                 });
@@ -377,13 +374,6 @@ namespace parduotuvessukazkuo.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("Parduotuves.Entities.Prize", b =>
-                {
-                    b.HasOne("Parduotuves.Entities.Account", null)
-                        .WithMany("Prize")
-                        .HasForeignKey("AccountId");
-                });
-
             modelBuilder.Entity("Parduotuves.Entities.Shop", b =>
                 {
                     b.HasOne("Parduotuves.Entities.Website", "Website")
@@ -407,8 +397,6 @@ namespace parduotuvessukazkuo.Migrations
             modelBuilder.Entity("Parduotuves.Entities.Account", b =>
                 {
                     b.Navigation("Bids");
-
-                    b.Navigation("Prize");
 
                     b.Navigation("Tickets");
                 });

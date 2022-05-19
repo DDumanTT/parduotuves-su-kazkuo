@@ -24,6 +24,7 @@ public class Account
     public List<Ticket>? Tickets { get; set; }
     public List<Bid>? Bids { get; set; }
     public decimal Money { get; set; } = 0m;
+    public List<Prize>? Prize { get; set; } = new();
 
     public bool OwnsToken(string token)
     {

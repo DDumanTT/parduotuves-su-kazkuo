@@ -1,4 +1,6 @@
-﻿namespace Parduotuves.Models.Accounts;
+﻿using Parduotuves.Entities;
+
+namespace Parduotuves.Models.Accounts;
 
 public class AccountResponse
 {
@@ -11,4 +13,5 @@ public class AccountResponse
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
     public decimal Money { get; set; }
+    public List<Prize>? Prizes { get; set; }
 }

@@ -9,4 +9,5 @@ public class Auction
     public string Name { get; set; }
     public List<Bid> Bid { get; set; }
     public Prize Prize { get; set; }
+    public bool Active { get; set; } = true;
 }

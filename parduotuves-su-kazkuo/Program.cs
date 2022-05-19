@@ -5,6 +5,8 @@ using Parduotuves.Authorization;
 using Parduotuves.Helpers;
 using Parduotuves.Services;
 using System.Globalization;
+using ParduotuvesSuKazkuo.Jobs;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,17 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionJobFactory();
+});
+
+builder.Services.AddQuartzServer(options =>
+{
+    options.WaitForJobsToComplete = false;
+});
+//builder.Services.AddScoped<AuctionExpiration, AuctionExpiration>();
 
 var app = builder.Build();
 

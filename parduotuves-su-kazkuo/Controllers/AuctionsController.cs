@@ -5,6 +5,8 @@ using Parduotuves.Authorization;
 using Parduotuves.Controllers;
 using Parduotuves.Entities;
 using Parduotuves.Helpers;
+using ParduotuvesSuKazkuo.Jobs;
+using Quartz;
 
 namespace ParduotuvesSuKazkuo.Controllers
 {
@@ -14,10 +16,12 @@ namespace ParduotuvesSuKazkuo.Controllers
     public class AuctionsController : BaseController
     {
         private readonly DataContext _context;
+        private readonly ISchedulerFactory _factory;
 
-        public AuctionsController(DataContext context)
+        public AuctionsController(DataContext context, ISchedulerFactory factory)
         {
             _context = context;
+            _factory = factory;
         }
 
         [HttpGet]
@@ -35,7 +39,16 @@ namespace ParduotuvesSuKazkuo.Controllers
         {
             _context.Auction.Add(auction);
             await _context.SaveChangesAsync();
+            var scheduler = await _factory.GetScheduler();
 
+            var job = JobBuilder.Create<AuctionExpiration>()
+                .WithIdentity(Guid.NewGuid().ToString(), "auction_expiration").Build();
+
+            var trigger = TriggerBuilder.Create().WithIdentity(Guid.NewGuid().ToString(), "auction_expiration")
+                .StartAt(auction.ExpirationDate).Build();
+
+            scheduler.Context.Put("id", auction.Id);
+            await scheduler.ScheduleJob(job, trigger);
             return Ok(new { message = "Auction was added" });
         }
 

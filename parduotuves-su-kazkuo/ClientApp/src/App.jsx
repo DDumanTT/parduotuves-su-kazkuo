@@ -19,6 +19,7 @@ import AuctionPage from "./pages/auctions/AuctionPage.jsx";
 const libraries = ["places"];
 
 // TODO: protect routes
+// TODO: fix routes
 export default function App() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY2,
