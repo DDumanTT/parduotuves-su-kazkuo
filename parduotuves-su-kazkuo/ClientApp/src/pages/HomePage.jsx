@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Button, ListGroup, ListGroupItem, Spinner } from "reactstrap";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { Button, ListGroup, ListGroupItem, Spinner, Table } from "reactstrap";
 import { Marker, useJsApiLoader, useLoadScript } from "@react-google-maps/api";
 
 import Map from "../components/Map";
@@ -9,6 +9,8 @@ export default function HomePage() {
   const [location, setLocation] = useState();
   const [shops, setShops] = useState([]);
   const [map, setMap] = useState();
+
+  const directionsRenderer = useRef(null);
 
   const [center, setCenter] = useState({
     lat: 54.8902511,
@@ -23,7 +25,7 @@ export default function HomePage() {
     map &&
       location &&
       axios.get("Shops").then((r) => {
-        let ss = r.data;
+        let ss = [...r.data];
         const placesService = new window.google.maps.places.PlacesService(map);
         const distanceMatrixService =
           new window.google.maps.DistanceMatrixService();
@@ -36,7 +38,6 @@ export default function HomePage() {
             (place, status) => {
               if (status == window.google.maps.places.PlacesServiceStatus.OK) {
                 ss[i].rating = place.rating;
-                console.log(location);
                 distanceMatrixService.getDistanceMatrix(
                   {
                     origins: [location],
@@ -52,7 +53,26 @@ export default function HomePage() {
                     if (status === "OK") {
                       ss[i].distance =
                         response.rows[0].elements[0].distance.value / 1000;
-                      setShops((prev) => [...prev, ss[i]]);
+                      if (ss[i].distance && ss[i].rating) {
+                        axios
+                          .post("shops/suitability", {
+                            distance: ss[i].distance,
+                            rating: ss[i].rating,
+                            people: Math.floor(Math.random() * 30),
+                          })
+                          .then((r) => {
+                            ss[i].suitability = r.data.suitability;
+                            let shop = shops.find((sh) => sh.id === s.id);
+                            if (!shop) {
+                              setShops((prev) => [...prev, ss[i]]);
+                            }
+                          });
+                      } else {
+                        let shop = shops.find((sh) => sh.id === s.id);
+                        if (!shop) {
+                          setShops((prev) => [...prev, ss[i]]);
+                        }
+                      }
                     }
                   }
                 );
@@ -63,18 +83,11 @@ export default function HomePage() {
       });
   }, [map, location]);
 
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
-
-  useEffect(() => {
-    console.log(shops);
-  }, [shops]);
-
   const onLoad = useCallback((map) => {
     const google = window.google;
 
     setMap(map);
+    directionsRenderer.current = new window.google.maps.DirectionsRenderer();
 
     // Add get location button
     const infoWindow = new google.maps.InfoWindow();
@@ -119,6 +132,78 @@ export default function HomePage() {
     }
   }, []);
 
+  const showDirections = (dest) => {
+    const directionsService = new window.google.maps.DirectionsService();
+    if (directionsRenderer.current !== null) {
+      directionsRenderer.current.setMap(null);
+      directionsRenderer.current = null;
+    }
+    directionsRenderer.current = new window.google.maps.DirectionsRenderer();
+    directionsRenderer.current.setMap(map);
+    directionsService.route(
+      {
+        origin: location,
+        destination: dest,
+        travelMode: "DRIVING",
+      },
+      (res, status) => {
+        if (status === "OK") {
+          directionsRenderer.current.setDirections(res);
+        }
+      }
+    );
+  };
+
+  const renderShopsTable = () => {
+    let sortedShops = [...shops].sort((a, b) => {
+      if (a.suitability === b.suitability) {
+        return 0;
+      } else if (!a.suitability) {
+        return 1;
+      } else if (!b.suitability) {
+        return -1;
+      } else {
+        return a.suitability < b.suitability ? 1 : -1;
+      }
+    });
+    if (sortedShops.length > 5) {
+      sortedShops = sortedShops.slice(0, 5);
+    }
+    return (
+      <div className="position-absolute bottom-0">
+        <Table hover className="bg-light mb-0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Distance</th>
+              <th>Rating</th>
+              <th>Suit.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedShops.map((s, i) => {
+              return (
+                <tr
+                  key={i}
+                  onClick={() =>
+                    showDirections(
+                      new window.google.maps.LatLng(s.latitude, s.longitude)
+                    )
+                  }
+                >
+                  <th>{s.name}</th>
+                  <th>{s.distance ?? "-"} km</th>
+                  <th>{s.rating ?? "-"}</th>
+                  <th>{s.suitability ?? "-"}</th>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+    );
+  };
+
   return (
     <>
       <Map
@@ -135,23 +220,7 @@ export default function HomePage() {
               position={new window.google.maps.LatLng(s.latitude, s.longitude)}
             />
           ))}
-        {shops && (
-          <ListGroup className="position-absolute top-50">
-            {shops.map((s, i) => {
-              console.log("lole");
-              console.log(s);
-              return (
-                <ListGroupItem key={i} action style={{ width: 200 }}>
-                  <div className="d-flex">
-                    <span>{s.name}</span>
-                    <span>{s.rating}</span>
-                    <span>{s.distance}</span>
-                  </div>
-                </ListGroupItem>
-              );
-            })}
-          </ListGroup>
-        )}
+        {shops && renderShopsTable()}
       </Map>
     </>
   );
