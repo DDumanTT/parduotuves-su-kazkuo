@@ -53,6 +53,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WebScraper\WebScraper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="fuzzy.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -9,7 +9,7 @@ string urlBarbora = @"https://barbora.lt/?redirectafterlogin=https%3A%2F%2Fbarbo
 // TODO implement barbora
 
 //Scraper.Lidl(urlLidl);
-Scraper.Maxima(urlMaxima);
+//Scraper.Maxima(urlMaxima);
 
 namespace WebScraper
 {
