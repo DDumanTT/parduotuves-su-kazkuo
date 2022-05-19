@@ -21,13 +21,13 @@ public class Account
     public DateTime? Updated { get; set; }
     [JsonIgnore]
     public List<RefreshToken> RefreshTokens { get; set; }
-    public List<Ticket>? Tickets { get; set; } = new List<Ticket>();
+    public List<Ticket>? Tickets { get; set; } = new();
     public List<Bid>? Bids { get; set; }
     public decimal Money { get; set; } = 0m;
     public List<Prize>? Prize { get; set; } = new();
 
     public bool OwnsToken(string token)
     {
-        return this.RefreshTokens?.Find(x => x.Token == token) != null;
+        return RefreshTokens?.Find(x => x.Token == token) != null;
     }
 }

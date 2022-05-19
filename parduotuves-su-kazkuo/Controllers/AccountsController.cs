@@ -23,17 +23,19 @@ public class AccountsController : BaseController
         _accountService = accountService;
     }
 
-    //[HttpGet("tickets")]
-    //public IActionResult GetTicketsCount()
-    //{
-    //    //var count = 0;
-    //    //foreach (var ticket in Account.Tickets)
-    //    //{
-    //    //    count++;
-    //    //}
+    [HttpGet("tickets")]
+    public IActionResult GetTicketsCount()
+    {
+        var tickets = _context.Accounts.Include(x => x.Tickets).FirstOrDefault(x => x.Id == Account.Id)!.Tickets;
 
-    //    return Ok(count);
-    //}
+        var count = 0;
+        foreach (var ticket in tickets)
+        {
+            count++;
+        }
+
+        return Ok(count);
+    }
 
     [HttpGet("prizes")]
     public IActionResult GetPrizes()
