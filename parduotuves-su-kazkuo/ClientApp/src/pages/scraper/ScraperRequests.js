@@ -11,11 +11,8 @@ export const createScraper = (
     shopId
 ) => {
     return axiosAuth.post(`${scraperPath}`, {
-        firstName,
-        lastName,
-        role,
-        email,
-        password,
-        confirmPassword,
+        path,
+        frequecny,
+        shopId
     });
 };

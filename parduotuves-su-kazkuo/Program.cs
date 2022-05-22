@@ -6,6 +6,7 @@ using Parduotuves.Helpers;
 using Parduotuves.Services;
 using System.Globalization;
 using ParduotuvesSuKazkuo.Jobs;
+using ParduotuvesSuKazkuo.Services;
 using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +42,24 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddQuartz(q =>
 {
     q.UseMicrosoftDependencyInjectionJobFactory();
+    // Create a "key" for the job
+    var jobKey = new JobKey("ScraperJob");
+
+    // Register the job with the DI container
+    q.AddJob<ScrapePages>(opts => opts.WithIdentity(jobKey));
+
+
+    // Create a trigger for the job
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey) // link to the HelloWorldJob
+        .WithIdentity("ScraperJob-trigger").StartNow().WithSimpleSchedule(x => x
+            //.WithIntervalInSeconds(120) // TODO for testing purposes
+            .WithIntervalInHours(24) // TODO uncomment
+            .RepeatForever()));
 });
+
+//builder.Services.AddHostedService<ScraperService>();
+//builder.Ad
 
 builder.Services.AddQuartzServer(options =>
 {

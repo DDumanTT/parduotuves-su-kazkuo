@@ -69,15 +69,15 @@ export default function App() {
               <Route index element={<AuctionPage />} />
             </Route>
             
-            <Route
-              path="scraper"
-              element={<RequireAuth allowedRoles={["Admin"]} />}
+            {/*<Route*/}
+            {/*  path="scraper"*/}
+            {/*  element={<RequireAuth allowedRoles={["Admin"]} />}*/}
               
-            >
-              <Route index element={<ScraperPage />} />
-              <Route path="create" element={<ScraperCreate />} />
-              <Route path="edit/:shopId" element={<UsersEdit />} />
-            </Route>
+            {/*>*/}
+            {/*  <Route index element={<ScraperPage />} />*/}
+            {/*  <Route path="create" element={<ScraperCreate />} />*/}
+            {/*  <Route path="edit/:shopId" element={<UsersEdit />} />*/}
+            {/*</Route>*/}
 
             <Route path="lottery" element={<LotteryPage />} />
             <Route path="about" element={<AboutPage />} />

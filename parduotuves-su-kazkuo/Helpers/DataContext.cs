@@ -13,6 +13,8 @@ public class DataContext : DbContext
     public DbSet<Bid> Bid { get; set; }
     public DbSet<Prize> Prize { get; set; }
     public DbSet<Scraper> Scraper { get; set; }
+    public DbSet<Website> Website { get; set; }
+    public DbSet<Item> Item { get; set; }
 
     private readonly IConfiguration Configuration;
 

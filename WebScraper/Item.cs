@@ -1,7 +1,8 @@
 ﻿namespace  WebScraper
 {
-    class Item
+    public class Item
     {
+        public string UniqueId { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         //private double Price { get; set; }
@@ -11,6 +12,7 @@
 
         public Item(string name, double price, string description, string itemCode)
         {
+            UniqueId = Guid.NewGuid().ToString();
             Name = name;
             Price = price;
             Description = description;

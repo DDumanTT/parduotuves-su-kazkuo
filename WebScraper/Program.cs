@@ -3,24 +3,26 @@ using HtmlAgilityPack.CssSelectors.NetCore;
 using WebScraper;
 
 string urlLidl = @"https://www.lidl.lt/pasiulymai"; 
-string urlMaxima = @"https://www.maxima.lt/akcijos"; 
-string urlBarbora = @"https://barbora.lt/?redirectafterlogin=https%3A%2F%2Fbarbora.lt%2Fmano-prekes"; 
-
-// TODO implement barbora
+string urlMaxima = @"https://www.maxima.lt/akcijos";  // NOT IMPLEMENTED
+string urlBarbora = @"https://barbora.lt/?redirectafterlogin=https%3A%2F%2Fbarbora.lt%2Fmano-prekes"; // NOT IMPLEMENTED
 
 //Scraper.Lidl(urlLidl);
 //Scraper.Maxima(urlMaxima);
 
 namespace WebScraper
 {
-    class Scraper
+    public class Scraper
     {
         public static List<Item> Lidl(string url)
         {
             //string url = @"https://www.lidl.lt/pasiulymai"; // tested case
-            HtmlWeb web = new HtmlWeb();
-            var htmlDoc = web.Load(url);
+            var htmlDoc = GetWebsite(url);
+            List<Item> items = ScrapeWebsites(htmlDoc);
+            return items;
+        }
 
+        public static List<Item> ScrapeWebsites(HtmlDocument htmlDoc)
+        {
             IList<HtmlNode> nodes = htmlDoc.QuerySelectorAll("div .nuc-a-flex-item .nuc-a-flex-item--width-6"); // nuc-a-flex-item nuc-a-flex-item--width-6 nuc-a-flex-item--width-4@sm
             List<Item> items = new List<Item>();
             foreach (HtmlNode node in nodes)
@@ -70,7 +72,13 @@ namespace WebScraper
             throw new NotImplementedException("Maxima scraper is not implemented");
             return items;
         }
+
+
+        public static HtmlDocument GetWebsite(string url)
+        {
+            HtmlWeb web = new HtmlWeb();
+            var htmlDoc = web.Load(url);
+            return htmlDoc;
+        }
     }
-
-
 }
