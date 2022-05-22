@@ -16,6 +16,8 @@ import UsersEdit from "./pages/users/UsersEdit";
 import { useLoadScript } from "@react-google-maps/api";
 import AuctionPage from "./pages/auctions/AuctionPage.jsx";
 import LotteryPage from "./pages/LotteryPage";
+import ScraperPage from "./pages/scraper/ScraperPage";
+import ScraperCreate from "./pages/scraper/ScraperCreate";
 
 const libraries = ["places"];
 
@@ -65,6 +67,16 @@ export default function App() {
               element={<RequireAuth allowedRoles={["Admin", "User"]} />}
             >
               <Route index element={<AuctionPage />} />
+            </Route>
+            
+            <Route
+              path="scraper"
+              element={<RequireAuth allowedRoles={["Admin"]} />}
+              
+            >
+              <Route index element={<ScraperPage />} />
+              <Route path="create" element={<ScraperCreate />} />
+              <Route path="edit/:shopId" element={<UsersEdit />} />
             </Route>
 
             <Route path="lottery" element={<LotteryPage />} />

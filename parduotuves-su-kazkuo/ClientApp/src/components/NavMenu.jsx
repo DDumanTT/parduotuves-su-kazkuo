@@ -71,6 +71,9 @@ export default function NavMenu() {
                   <MenuItem to="/shops" className="ps-4">
                     Shops
                   </MenuItem>
+                  <MenuItem to="/scraper" className="ps-4">
+                    Scraper
+                  </MenuItem>
                 </ListGroup>
               </AccordionBody>
             </AccordionItem>

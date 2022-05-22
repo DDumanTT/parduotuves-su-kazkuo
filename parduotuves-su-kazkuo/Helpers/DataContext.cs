@@ -12,6 +12,7 @@ public class DataContext : DbContext
     public DbSet<Ticket> Ticket { get; set; }
     public DbSet<Bid> Bid { get; set; }
     public DbSet<Prize> Prize { get; set; }
+    public DbSet<Scraper> Scraper { get; set; }
 
     private readonly IConfiguration Configuration;
 

@@ -5,26 +5,27 @@ import { Link } from "react-router-dom";
 import { axiosAuth } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import DelModal from "../../components/DelModal";
-import { getUsers, deleteUser } from "./UsersRequests";
+import { getScrapers, deleteScraper } from "./ScraperRequests";
 
-export default function UsersPage() {
-  const [users, setUsers] = useState([]);
+export default function ScraperPage() {
+  const [scrapers, setScrapers] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
 
   const deleteItem = (id) => {
-    deleteUser(id)
+    deleteScraper(id)
       .then((response) => {
-        setUsers((prev) => prev.filter((user) => user.id !== id));
+        //   TODO implement by scraper
+        setScrapers((prev) => prev.filter((user) => user.id !== id));
       })
       .catch((err) => console.log(err.response.data));
   };
 
   useEffect(() => {
     setLoading(true);
-    getUsers()
+    getScrapers()
       .then((response) => {
-        setUsers(response.data);
+        setScrapers(response.data);
         setLoading(false);
       })
       .catch((err) => console.log(err.response.data));
@@ -32,22 +33,24 @@ export default function UsersPage() {
 
   return (
     <>
-      <h1>Users</h1>
+    NOT IMPLEMENTED
+      <h1>Scrapers</h1>
       <Table responsive hover>
         <thead>
           <tr>
             <th>Id</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Role</th>
             <th>Created</th>
             <th>Updated</th>
-            <th>Actions</th>
+            <th>Path</th>
+            <th>Frequency</th>
+            <th>Shop Id</th>
+            <th>Updated</th>
+            {/* TODO remove auctions th */}
+            <th>Actions</th> 
           </tr>
         </thead>
         <tbody>
-          {users.map((item) => {
+          {scrapers.map((item) => {
             console.log(item);
             const created = item.created
               ? new Date(item.created).toUTCString()
